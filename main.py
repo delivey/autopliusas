@@ -29,7 +29,7 @@ class Monitor:
     def get_minutes_ago_from_date(self, date):
         try:
             number = int(date.split(" ")[0])
-            if "Less" in date:
+            if "Less than" in date:
                 return 1
             if " days ago" in date:
                 return number * 24 * 60
@@ -73,6 +73,8 @@ class Monitor:
     def get_newest_car(self):
         all_cars = self.get_all_cars()
         filtered_cars = self.get_filtered_cars(all_cars)
+        if len(filtered_cars) == 0:
+            return False
         newest_cars = sorted(
             filtered_cars, key=lambda car: car['minutes_ago'])
         # for car in newest_cars:
@@ -97,7 +99,10 @@ class Monitor:
         while True:
             time.sleep(60)
             new_newest_car = self.get_newest_car()
-            if car_matches_criteria(new_newest_car, newest_car):
+            if not new_newest_car:
+                print("jokiu masinu bbd")
+                continue
+            if self.car_matches_criteria(new_newest_car, newest_car):
                 print("\nnauja masina radau krc")
                 print(new_newest_car["url"])
                 print(f"pries {new_newest_car['minutes_ago']} minutes ikelta")
