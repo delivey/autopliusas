@@ -36,8 +36,8 @@ class Monitor:
             if " h ago" in date:
                 return number * 60
             if " h" in date and " min ago" in date:
-                print(date)
-                return number * 60 + int(date.split(" ")[2])
+                minutes = number * 60 + int(date.split(" ")[2])
+                return minutes
             return number
         except:
             print("nepavyko gauti minutes ago is date")
@@ -87,7 +87,7 @@ class Monitor:
         while True:
             time.sleep(60)
             new_newest_car = self.get_newest_car()
-            if new_newest_car["url"] != newest_car["url"]:
+            if new_newest_car["url"] != newest_car["url"] and new_newest_car["minutes_ago"] < newest_car["minutes_ago"]:
                 print("\nnauja masina radau krc")
                 print(new_newest_car["url"])
                 print(f"pries {new_newest_car['minutes_ago']} minutes ikelta")
