@@ -65,7 +65,8 @@ class Monitor:
             url = car.get("href")
             filtered_cars.append({
                 "url": url,
-                "minutes_ago": minutes_ago
+                "minutes_ago": minutes_ago,
+                "found_on": int(time.time())
             })
         return filtered_cars
 
@@ -80,6 +81,15 @@ class Monitor:
         newest_car = newest_cars[0]
         return newest_car
 
+    def car_matches_criteria(self, newest, last):
+        if newest["url"] == last["url"]:
+            return False
+        current_time = int(time.time())
+        minutes_ago = (current_time - last["found_on"]) / 60
+        if newest['minutes_ago'] > minutes_ago + last['minutes_ago']:
+            return False
+        return True
+
     def monitor(self):
         newest_car = self.get_newest_car()
         print(
@@ -87,10 +97,11 @@ class Monitor:
         while True:
             time.sleep(60)
             new_newest_car = self.get_newest_car()
-            if new_newest_car["url"] != newest_car["url"] and new_newest_car["minutes_ago"] < newest_car["minutes_ago"]:
+            if car_matches_criteria(new_newest_car, newest_car):
                 print("\nnauja masina radau krc")
                 print(new_newest_car["url"])
                 print(f"pries {new_newest_car['minutes_ago']} minutes ikelta")
+            newest_car = new_newest_car
 
 
 print("pradedam")
