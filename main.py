@@ -73,7 +73,7 @@ class Monitor:
     def get_newest_car(self):
         all_cars = self.get_all_cars()
         filtered_cars = self.get_filtered_cars(all_cars)
-        if len(filtered_cars) == 0:
+        if not filtered_cars or len(filtered_cars) == 0:
             return False
         newest_cars = sorted(
             filtered_cars, key=lambda car: car['minutes_ago'])
