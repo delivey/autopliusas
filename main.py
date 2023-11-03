@@ -30,6 +30,8 @@ class Monitor:
     def get_minutes_from_text(self, text):
         if "min" not in text:
             return 999
+        if text == "Mažiau nei prieš minutę":
+            return 0
         numbers = [int(s) for s in text.split() if s.isdigit()]
         if len(numbers) == 0:
             print("neradau laiko cia??: ", text)
@@ -45,8 +47,8 @@ class Monitor:
             laikas = car.find(
                 "div", class_="announcement-badge badge-new").text
             minutes = self.get_minutes_from_text(laikas)
-            # jei jau yra masinu ir masina yra senesne nei 2 minutes, tai praleidziam
-            if len(self.seen_cars) != 0 and minutes > 2:
+            # jei jau yra masinu ir masina yra senesne nei 1 minutes, tai praleidziam
+            if len(self.seen_cars) != 0 and minutes > 1:
                 continue
             car_urls.append(car["href"])
         return car_urls
