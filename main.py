@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+from notify import notify
 
 
 class Monitor:
@@ -69,6 +70,7 @@ class Monitor:
                     continue
                 self.seen_cars.append(car)
                 print(f"radau nauja: {car}")
+                notify(car)
             self.cars = updated_cars
             time.sleep(30)
             print("naujas ciklas")
